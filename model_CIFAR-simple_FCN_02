@@ -1,0 +1,80 @@
+name: "MLP"
+layer {
+  name: "cifar100"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  data_param {
+    batch_size: 64
+  }
+}
+layer {
+  name: "cifar100"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TEST
+  }
+  data_param {
+    batch_size: 100
+  }
+}
+layer {
+  name: "scale"
+  bottom: "data"
+  top: "scale"
+  type: "Power"
+  power_param {
+    # 1/(standard deviation)
+    scale: 0.0125
+  }
+}
+ 
+layer {
+  name: "ip1"
+  type: "InnerProduct"
+  bottom: "scale"
+  top: "ip1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 100
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "ip1"
+  top: "ip1"
+} 
+layer {
+  name: "accuracy"
+  type: "Accuracy"
+  bottom: "ip1"
+  bottom: "label"
+  top: "accuracy"
+  include {
+    phase: TEST
+  }
+}
+layer {
+  name: "loss"
+  type: "SoftmaxWithLoss"
+  bottom: "ip1"
+  bottom: "label"
+  top: "loss"
+}
