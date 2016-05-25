@@ -1,6 +1,6 @@
 name: "MLP-4L"
 layer {
-  name: "cifar10"
+  name: "cifar100"
   type: "Data"
   top: "data"
   top: "label"
@@ -12,7 +12,7 @@ layer {
   }
 }
 layer {
-  name: "cifar10"
+  name: "cifar100"
   type: "Data"
   top: "data"
   top: "label"
