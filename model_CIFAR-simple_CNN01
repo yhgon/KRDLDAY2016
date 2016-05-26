@@ -1,4 +1,4 @@
-name: "MLP"
+name: "simpleCNN"
 layer {
   name: "cifar100"
   type: "Data"
